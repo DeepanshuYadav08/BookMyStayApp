@@ -1,47 +1,37 @@
-import java.util.HashMap;
-import java.util.Map;
+abstract class Room {
 
-class Room {
-    private String type;
-    private int beds;
-    private int size;
-    private double price;
+    protected int numberOfBeds;
+    protected int squareFeet;
+    protected double pricePerNight;
 
-    public Room(String type, int beds, int size, double price) {
-        this.type = type;
-        this.beds = beds;
-        this.size = size;
-        this.price = price;
+    public Room(int numberOfBeds, int squareFeet, double pricePerNight) {
+        this.numberOfBeds = numberOfBeds;
+        this.squareFeet = squareFeet;
+        this.pricePerNight = pricePerNight;
     }
 
-    public String getType() { return type; }
-    public int getBeds() { return beds; }
-    public int getSize() { return size; }
-    public double getPrice() { return price; }
+    public void displayRoomDetails() {
+        System.out.println("Beds: " + numberOfBeds);
+        System.out.println("Size: " + squareFeet + " sqft");
+        System.out.println("Price per night: " + pricePerNight);
+    }
 }
 
-/* Centralized inventory manager using HashMap */
-class RoomInventory {
-
-    private Map<String, Integer> roomAvailability;
-
-    public RoomInventory() {
-        roomAvailability = new HashMap<>();
-        initializeInventory();
+class SingleRoom extends Room {
+    public SingleRoom() {
+        super(1, 250, 1500.0);
     }
+}
 
-    private void initializeInventory() {
-        roomAvailability.put("Single", 5);
-        roomAvailability.put("Double", 3);
-        roomAvailability.put("Suite", 2);
+class DoubleRoom extends Room {
+    public DoubleRoom() {
+        super(2, 400, 2500.0);
     }
+}
 
-    public Map<String, Integer> getRoomAvailability() {
-        return roomAvailability;
-    }
-
-    public void updateAvailability(String roomType, int count) {
-        roomAvailability.put(roomType, count);
+class SuiteRoom extends Room {
+    public SuiteRoom() {
+        super(3, 750, 5000.0);
     }
 }
 
@@ -49,32 +39,26 @@ public class BookMyStayApp {
 
     public static void main(String[] args) {
 
-        Room single = new Room("Single", 1, 250, 1500.0);
-        Room doubleRoom = new Room("Double", 2, 400, 2500.0);
-        Room suite = new Room("Suite", 3, 750, 5000.0);
+        System.out.println("Hotel Room Initialization\n");
 
-        RoomInventory inventory = new RoomInventory();
+        Room single = new SingleRoom();
+        Room doub = new DoubleRoom();
+        Room suite = new SuiteRoom();
 
-        System.out.println("Hotel Room Inventory Status\n");
+        int singleAvailable = 5;
+        int doubleAvailable = 3;
+        int suiteAvailable = 2;
 
         System.out.println("Single Room:");
-        System.out.println("Beds: " + single.getBeds());
-        System.out.println("Size: " + single.getSize() + " sqft");
-        System.out.println("Price per night: " + single.getPrice());
-        System.out.println("Available Rooms: " + inventory.getRoomAvailability().get("Single"));
-        System.out.println();
+        single.displayRoomDetails();
+        System.out.println("Available: " + singleAvailable + "\n");
 
         System.out.println("Double Room:");
-        System.out.println("Beds: " + doubleRoom.getBeds());
-        System.out.println("Size: " + doubleRoom.getSize() + " sqft");
-        System.out.println("Price per night: " + doubleRoom.getPrice());
-        System.out.println("Available Rooms: " + inventory.getRoomAvailability().get("Double"));
-        System.out.println();
+        doub.displayRoomDetails();
+        System.out.println("Available: " + doubleAvailable + "\n");
 
         System.out.println("Suite Room:");
-        System.out.println("Beds: " + suite.getBeds());
-        System.out.println("Size: " + suite.getSize() + " sqft");
-        System.out.println("Price per night: " + suite.getPrice());
-        System.out.println("Available Rooms: " + inventory.getRoomAvailability().get("Suite"));
+        suite.displayRoomDetails();
+        System.out.println("Available: " + suiteAvailable);
     }
 }
